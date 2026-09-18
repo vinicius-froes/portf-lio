@@ -96,52 +96,163 @@
   var yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
-  // ---------- Work carousel ----------
-  var carousel = document.getElementById("work-carousel");
+  // ---------- Work — 3D ring carousel ----------
+  var stage = document.getElementById("work-stage");
+  var ring = document.getElementById("work-ring");
   var prevBtn = document.getElementById("work-prev");
   var nextBtn = document.getElementById("work-next");
   var counterEl = document.getElementById("work-counter");
+  var titleEl = document.getElementById("work-current-title");
 
-  if (carousel) {
-    var slides = carousel.querySelectorAll(".work-slide");
+  if (stage && ring) {
+    var items = Array.prototype.slice.call(ring.querySelectorAll(".ring-item"));
+    var n = items.length;
 
-    function pad(n) { return n < 10 ? "0" + n : String(n); }
+    if (n > 0) {
+      var step = 360 / n;
+      var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var radius = 380;
+      var angle = 0; // ring's own rotateY, in degrees
+      var mode = "auto"; // "auto" | "tween" — tween owns the angle while active
+      var paused = false; // true while hovering (auto-rotate pauses, tween is unaffected)
+      var dragging = false;
+      var autoSpeed = reduceMotion ? 0 : 5.5; // degrees per second
+      var lastTs = null;
+      var resumeTimer = null;
 
-    function slideStep() {
-      var first = slides[0];
-      if (!first) return carousel.clientWidth;
-      var style = window.getComputedStyle(carousel);
-      var gap = parseFloat(style.columnGap || style.gap || "0") || 0;
-      return first.getBoundingClientRect().width + gap;
-    }
+      function pad(num) { return num < 10 ? "0" + num : String(num); }
 
-    if (prevBtn) {
-      prevBtn.addEventListener("click", function () {
-        carousel.scrollBy({ left: -slideStep(), behavior: "smooth" });
-      });
-    }
-    if (nextBtn) {
-      nextBtn.addEventListener("click", function () {
-        carousel.scrollBy({ left: slideStep(), behavior: "smooth" });
-      });
-    }
-
-    if (counterEl && slides.length) {
-      var total = slides.length;
-      counterEl.textContent = pad(1) + " / " + pad(total);
-      if ("IntersectionObserver" in window) {
-        var slideIO = new IntersectionObserver(
-          function (entries) {
-            entries.forEach(function (entry) {
-              if (!entry.isIntersecting) return;
-              var idx = Array.prototype.indexOf.call(slides, entry.target) + 1;
-              counterEl.textContent = pad(idx) + " / " + pad(total);
-            });
-          },
-          { root: carousel, threshold: 0.6 }
-        );
-        slides.forEach(function (s) { slideIO.observe(s); });
+      function layout() {
+        var w = stage.clientWidth || 900;
+        radius = Math.max(220, Math.min(480, Math.round(w * 0.62)));
+        items.forEach(function (item, i) {
+          item.style.transform = "rotateY(" + (i * step) + "deg) translateZ(" + radius + "px)";
+        });
       }
+
+      function currentIndex() {
+        var normalized = ((-angle % 360) + 360) % 360;
+        return Math.round(normalized / step) % n;
+      }
+
+      function updateCaption() {
+        var idx = currentIndex();
+        var item = items[idx];
+        if (counterEl) counterEl.textContent = pad(idx + 1) + " / " + pad(n);
+        if (titleEl && item) {
+          var title = item.getAttribute("data-title") || "";
+          var tag = item.getAttribute("data-tag") || "";
+          titleEl.textContent = tag ? title + " — " + tag : title;
+        }
+      }
+
+      function render() {
+        ring.style.transform = "translateZ(-" + radius + "px) rotateY(" + angle + "deg)";
+      }
+
+      function scheduleResume() {
+        if (resumeTimer) clearTimeout(resumeTimer);
+        resumeTimer = setTimeout(function () {
+          mode = "auto";
+          paused = false;
+          lastTs = null;
+        }, 1800);
+      }
+
+      function tweenTo(target, duration) {
+        mode = "tween";
+        var start = angle;
+        var delta = target - start;
+        var startTs = null;
+        function step(ts) {
+          if (mode !== "tween") return;
+          if (!startTs) startTs = ts;
+          var t = Math.min(1, (ts - startTs) / duration);
+          var eased = 1 - Math.pow(1 - t, 3);
+          angle = start + delta * eased;
+          render();
+          updateCaption();
+          if (t < 1) {
+            requestAnimationFrame(step);
+          } else {
+            scheduleResume();
+          }
+        }
+        requestAnimationFrame(step);
+      }
+
+      function tick(ts) {
+        if (mode === "auto" && !paused && !dragging) {
+          if (lastTs !== null) {
+            var dt = (ts - lastTs) / 1000;
+            angle -= autoSpeed * dt;
+            render();
+            updateCaption();
+          }
+          lastTs = ts;
+        } else {
+          lastTs = null;
+        }
+        requestAnimationFrame(tick);
+      }
+
+      layout();
+      render();
+      updateCaption();
+      window.addEventListener("resize", layout);
+      requestAnimationFrame(tick);
+
+      if (prevBtn) {
+        prevBtn.addEventListener("click", function () {
+          var target = Math.round(angle / step) * step + step;
+          tweenTo(target, 500);
+        });
+      }
+      if (nextBtn) {
+        nextBtn.addEventListener("click", function () {
+          var target = Math.round(angle / step) * step - step;
+          tweenTo(target, 500);
+        });
+      }
+
+      // Drag / swipe to spin
+      var dragStartX = 0;
+      var dragStartAngle = 0;
+
+      function pointerDown(e) {
+        dragging = true;
+        mode = "auto";
+        if (resumeTimer) clearTimeout(resumeTimer);
+        stage.classList.add("dragging");
+        dragStartX = e.clientX;
+        dragStartAngle = angle;
+        if (stage.setPointerCapture && e.pointerId !== undefined) {
+          try { stage.setPointerCapture(e.pointerId); } catch (err) {}
+        }
+      }
+      function pointerMove(e) {
+        if (!dragging) return;
+        var dx = e.clientX - dragStartX;
+        angle = dragStartAngle + dx * 0.35;
+        render();
+        updateCaption();
+      }
+      function pointerUp() {
+        if (!dragging) return;
+        dragging = false;
+        stage.classList.remove("dragging");
+        scheduleResume();
+      }
+
+      stage.addEventListener("pointerdown", pointerDown);
+      window.addEventListener("pointermove", pointerMove);
+      window.addEventListener("pointerup", pointerUp);
+      window.addEventListener("pointercancel", pointerUp);
+
+      stage.addEventListener("mouseenter", function () { paused = true; });
+      stage.addEventListener("mouseleave", function () {
+        if (!dragging) scheduleResume();
+      });
     }
   }
 })();
