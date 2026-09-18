@@ -58,7 +58,7 @@
           }
         });
       },
-      { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
+      { threshold: 0.12, rootMargin: "0px 0px -30px 0px" }
     );
     revealEls.forEach(function (el) { io.observe(el); });
   } else {
@@ -84,23 +84,57 @@
     sections.forEach(function (s) { navIO.observe(s); });
   }
 
-  var toTop = document.getElementById("to-top");
   var header = document.querySelector(".site-header");
   window.addEventListener(
     "scroll",
     function () {
-      var y = window.scrollY;
-      if (toTop) toTop.classList.toggle("show", y > 500);
-      if (header) header.classList.toggle("scrolled", y > 8);
+      if (header) header.classList.toggle("scrolled", window.scrollY > 8);
     },
     { passive: true }
   );
-  if (toTop) {
-    toTop.addEventListener("click", function () {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-  }
 
   var yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+
+  // ---------- Lightbox ----------
+  var lightbox = document.getElementById("lightbox");
+  var lightboxImg = document.getElementById("lightbox-img");
+  var lightboxTitle = document.getElementById("lightbox-title");
+  var lightboxTag = document.getElementById("lightbox-tag");
+  var lightboxClose = document.getElementById("lightbox-close");
+  var workCards = document.querySelectorAll(".work-card");
+
+  function openLightbox(card) {
+    var img = card.querySelector(".work-cover img");
+    var title = card.querySelector(".work-title");
+    var tag = card.querySelector(".work-tag");
+    if (!img) return;
+    lightboxImg.src = img.getAttribute("src");
+    lightboxImg.alt = img.getAttribute("alt") || "";
+    lightboxTitle.textContent = title ? title.textContent : "";
+    lightboxTag.textContent = tag ? tag.textContent : "";
+    lightbox.classList.add("open");
+    lightbox.setAttribute("aria-hidden", "false");
+    document.body.classList.add("lightbox-lock");
+    lightbox.querySelector(".lightbox-scroll").scrollTop = 0;
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove("open");
+    lightbox.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("lightbox-lock");
+  }
+
+  workCards.forEach(function (card) {
+    card.addEventListener("click", function () { openLightbox(card); });
+  });
+  if (lightboxClose) lightboxClose.addEventListener("click", closeLightbox);
+  if (lightbox) {
+    lightbox.addEventListener("click", function (e) {
+      if (e.target === lightbox) closeLightbox();
+    });
+  }
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && lightbox.classList.contains("open")) closeLightbox();
+  });
 })();
