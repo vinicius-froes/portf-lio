@@ -12,11 +12,10 @@
 <meta property="og:title" content="Vinícius Fróes — Designer Gráfico">
 <meta property="og:description" content="Branding e Identidade Visual.">
 
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230a0a0a'/%3E%3Ctext x='32' y='44' font-family='Arial,sans-serif' font-weight='700' font-size='32' fill='%23fff' text-anchor='middle'%3EV%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230a0a0a'/%3E%3Ctext x='32' y='44' font-family='Arial,sans-serif' font-weight='700' font-size='32' fill='%23fff' text-anchor='middle'%3Ev%3C/text%3E%3C/svg%3E">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://api.fontshare.com">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap">
 
 <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -26,12 +25,12 @@
 
 <header class="site-header" id="top">
   <div class="container header-inner">
-    <a href="#top" class="logo" aria-label="Página inicial">VF</a>
+    <a href="#top" class="logo" aria-label="Página inicial">vf</a>
 
     <nav class="nav" id="nav" aria-label="Navegação principal">
-      <a href="#trabalhos">Trabalhos</a>
-      <a href="#sobre">Sobre</a>
-      <a href="#contato">Contato</a>
+      <a href="#trabalhos">trabalhos</a>
+      <a href="#sobre">sobre</a>
+      <a href="#contato">contato</a>
     </nav>
 
     <div class="header-actions">
@@ -59,80 +58,102 @@
   </section>
 
   <section id="trabalhos" class="work">
-    <div class="work-grid">
+    <div class="work-carousel-wrap" data-reveal>
+      <div class="work-carousel" id="work-carousel">
 
-      <button class="work-card" data-reveal data-work="sou-paulista" type="button">
-        <span class="work-cover"><img src="assets/work/sou-paulista.jpg" alt="Sou Paulista Cultural" loading="lazy"></span>
-        <span class="work-info">
-          <span class="work-title">Sou Paulista Cultural</span>
-          <span class="work-tag">Identidade Visual</span>
-        </span>
+        <!-- Cole o link do case "Sou Paulista Cultural" no href abaixo -->
+        <a class="work-slide" href="#" target="_blank" rel="noopener">
+          <span class="work-cover"><img src="assets/work/sou-paulista.jpg" alt="Sou Paulista Cultural" loading="lazy"></span>
+          <span class="work-info">
+            <span class="work-title">Sou Paulista Cultural</span>
+            <span class="work-tag">Identidade Visual</span>
+          </span>
+        </a>
+
+        <!-- Cole o link do case "Love in Cakes" no href abaixo -->
+        <a class="work-slide" href="#" target="_blank" rel="noopener">
+          <span class="work-cover"><img src="assets/work/love-in-cake.jpg" alt="Love in Cakes" loading="lazy"></span>
+          <span class="work-info">
+            <span class="work-title">Love in Cakes</span>
+            <span class="work-tag">Branding</span>
+          </span>
+        </a>
+
+        <!-- Cole o link do case "Editais SESI-SP" no href abaixo -->
+        <a class="work-slide" href="#" target="_blank" rel="noopener">
+          <span class="work-cover"><img src="assets/work/editais-sesi.jpg" alt="Editais SESI-SP 2025" loading="lazy"></span>
+          <span class="work-info">
+            <span class="work-title">Editais SESI-SP</span>
+            <span class="work-tag">Identidade Visual</span>
+          </span>
+        </a>
+
+        <!-- Cole o link do case "Balaio Raízes" no href abaixo -->
+        <a class="work-slide" href="#" target="_blank" rel="noopener">
+          <span class="work-cover"><img src="assets/work/raizes.jpg" alt="Projeto Raízes" loading="lazy"></span>
+          <span class="work-info">
+            <span class="work-title">Balaio Raízes</span>
+            <span class="work-tag">Música &amp; Cultura</span>
+          </span>
+        </a>
+
+        <!-- Cole o link do case "Ayanabio" no href abaixo -->
+        <a class="work-slide" href="#" target="_blank" rel="noopener">
+          <span class="work-cover"><img src="assets/work/ayanabio.jpg" alt="Marca Ayanabio" loading="lazy"></span>
+          <span class="work-info">
+            <span class="work-title">Ayanabio</span>
+            <span class="work-tag">Branding</span>
+          </span>
+        </a>
+
+        <!-- Cole o link do case "Cine SESI-SP" no href abaixo -->
+        <a class="work-slide" href="#" target="_blank" rel="noopener">
+          <span class="work-cover"><img src="assets/work/cine-sesi.jpg" alt="Cine SESI-SP" loading="lazy"></span>
+          <span class="work-info">
+            <span class="work-title">Cine SESI-SP</span>
+            <span class="work-tag">Identidade Visual</span>
+          </span>
+        </a>
+
+        <!-- Cole o link do case "Myca" no href abaixo -->
+        <a class="work-slide" href="#" target="_blank" rel="noopener">
+          <span class="work-cover"><img src="assets/work/myca.jpg" alt="Myca Roupas & Acessórios" loading="lazy"></span>
+          <span class="work-info">
+            <span class="work-title">Myca</span>
+            <span class="work-tag">Branding · Moda</span>
+          </span>
+        </a>
+
+        <!-- Cole o link do case "Potencialize" no href abaixo -->
+        <a class="work-slide" href="#" target="_blank" rel="noopener">
+          <span class="work-cover"><img src="assets/work/potencialize.jpg" alt="Potencialize 2020" loading="lazy"></span>
+          <span class="work-info">
+            <span class="work-title">Potencialize</span>
+            <span class="work-tag">Endomarketing</span>
+          </span>
+        </a>
+
+        <!-- Cole o link do case "Programa Kaizen" no href abaixo -->
+        <a class="work-slide" href="#" target="_blank" rel="noopener">
+          <span class="work-cover"><img src="assets/work/kaizen.jpg" alt="Programa Kaizen" loading="lazy"></span>
+          <span class="work-info">
+            <span class="work-title">Programa Kaizen</span>
+            <span class="work-tag">Endomarketing</span>
+          </span>
+        </a>
+
+      </div>
+
+      <button class="work-arrow work-arrow-prev" id="work-prev" type="button" aria-label="Projeto anterior">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
       </button>
-
-      <button class="work-card" data-reveal data-work="love-in-cake" type="button">
-        <span class="work-cover"><img src="assets/work/love-in-cake.jpg" alt="Love in Cakes" loading="lazy"></span>
-        <span class="work-info">
-          <span class="work-title">Love in Cakes</span>
-          <span class="work-tag">Branding</span>
-        </span>
+      <button class="work-arrow work-arrow-next" id="work-next" type="button" aria-label="Próximo projeto">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
       </button>
-
-      <button class="work-card" data-reveal data-work="editais-sesi" type="button">
-        <span class="work-cover"><img src="assets/work/editais-sesi.jpg" alt="Editais SESI-SP 2025" loading="lazy"></span>
-        <span class="work-info">
-          <span class="work-title">Editais SESI-SP</span>
-          <span class="work-tag">Identidade Visual</span>
-        </span>
-      </button>
-
-      <button class="work-card" data-reveal data-work="raizes" type="button">
-        <span class="work-cover"><img src="assets/work/raizes.jpg" alt="Projeto Raízes" loading="lazy"></span>
-        <span class="work-info">
-          <span class="work-title">Balaio Raízes</span>
-          <span class="work-tag">Música &amp; Cultura</span>
-        </span>
-      </button>
-
-      <button class="work-card" data-reveal data-work="ayanabio" type="button">
-        <span class="work-cover"><img src="assets/work/ayanabio.jpg" alt="Marca Ayanabio" loading="lazy"></span>
-        <span class="work-info">
-          <span class="work-title">Ayanabio</span>
-          <span class="work-tag">Branding</span>
-        </span>
-      </button>
-
-      <button class="work-card" data-reveal data-work="cine-sesi" type="button">
-        <span class="work-cover"><img src="assets/work/cine-sesi.jpg" alt="Cine SESI-SP" loading="lazy"></span>
-        <span class="work-info">
-          <span class="work-title">Cine SESI-SP</span>
-          <span class="work-tag">Identidade Visual</span>
-        </span>
-      </button>
-
-      <button class="work-card" data-reveal data-work="myca" type="button">
-        <span class="work-cover"><img src="assets/work/myca.jpg" alt="Myca Roupas & Acessórios" loading="lazy"></span>
-        <span class="work-info">
-          <span class="work-title">Myca</span>
-          <span class="work-tag">Branding · Moda</span>
-        </span>
-      </button>
-
-      <button class="work-card" data-reveal data-work="potencialize" type="button">
-        <span class="work-cover"><img src="assets/work/potencialize.jpg" alt="Potencialize 2020" loading="lazy"></span>
-        <span class="work-info">
-          <span class="work-title">Potencialize</span>
-          <span class="work-tag">Endomarketing</span>
-        </span>
-      </button>
-
-      <button class="work-card" data-reveal data-work="kaizen" type="button">
-        <span class="work-cover"><img src="assets/work/kaizen.jpg" alt="Programa Kaizen" loading="lazy"></span>
-        <span class="work-info">
-          <span class="work-title">Programa Kaizen</span>
-          <span class="work-tag">Endomarketing</span>
-        </span>
-      </button>
-
+    </div>
+    <div class="container work-footer">
+      <span id="work-counter">01 / 09</span>
+      <span>arraste ou use as setas</span>
     </div>
   </section>
 
@@ -146,6 +167,7 @@
         <ul class="exp-list">
           <li><span>SESI-SP</span><span>2024 —</span></li>
           <li><span>CRM Services</span><span>2023 – 24</span></li>
+          <li><span>Johnson &amp; Johnson</span><span>2022 – 23</span></li>
           <li><span>Grupo Cogna</span><span>2022 – 23</span></li>
           <li><span>WANA Ind. Química</span><span>2019 – 22</span></li>
         </ul>
@@ -171,23 +193,6 @@
     <span>São Paulo, Brasil</span>
   </div>
 </footer>
-
-<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-hidden="true">
-  <button class="lightbox-close" id="lightbox-close" type="button" aria-label="Fechar">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
-  </button>
-  <div class="lightbox-scroll">
-    <div class="lightbox-frame-outer">
-      <div class="lightbox-frame">
-        <img id="lightbox-img" src="" alt="">
-      </div>
-    </div>
-    <p class="lightbox-caption">
-      <span id="lightbox-title"></span>
-      <span id="lightbox-tag"></span>
-    </p>
-  </div>
-</div>
 
 <script src="js/main.js" defer></script>
 </body>

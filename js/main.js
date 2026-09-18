@@ -96,45 +96,52 @@
   var yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
-  // ---------- Lightbox ----------
-  var lightbox = document.getElementById("lightbox");
-  var lightboxImg = document.getElementById("lightbox-img");
-  var lightboxTitle = document.getElementById("lightbox-title");
-  var lightboxTag = document.getElementById("lightbox-tag");
-  var lightboxClose = document.getElementById("lightbox-close");
-  var workCards = document.querySelectorAll(".work-card");
+  // ---------- Work carousel ----------
+  var carousel = document.getElementById("work-carousel");
+  var prevBtn = document.getElementById("work-prev");
+  var nextBtn = document.getElementById("work-next");
+  var counterEl = document.getElementById("work-counter");
 
-  function openLightbox(card) {
-    var img = card.querySelector(".work-cover img");
-    var title = card.querySelector(".work-title");
-    var tag = card.querySelector(".work-tag");
-    if (!img) return;
-    lightboxImg.src = img.getAttribute("src");
-    lightboxImg.alt = img.getAttribute("alt") || "";
-    lightboxTitle.textContent = title ? title.textContent : "";
-    lightboxTag.textContent = tag ? tag.textContent : "";
-    lightbox.classList.add("open");
-    lightbox.setAttribute("aria-hidden", "false");
-    document.body.classList.add("lightbox-lock");
-    lightbox.querySelector(".lightbox-scroll").scrollTop = 0;
-  }
+  if (carousel) {
+    var slides = carousel.querySelectorAll(".work-slide");
 
-  function closeLightbox() {
-    lightbox.classList.remove("open");
-    lightbox.setAttribute("aria-hidden", "true");
-    document.body.classList.remove("lightbox-lock");
-  }
+    function pad(n) { return n < 10 ? "0" + n : String(n); }
 
-  workCards.forEach(function (card) {
-    card.addEventListener("click", function () { openLightbox(card); });
-  });
-  if (lightboxClose) lightboxClose.addEventListener("click", closeLightbox);
-  if (lightbox) {
-    lightbox.addEventListener("click", function (e) {
-      if (e.target === lightbox) closeLightbox();
-    });
+    function slideStep() {
+      var first = slides[0];
+      if (!first) return carousel.clientWidth;
+      var style = window.getComputedStyle(carousel);
+      var gap = parseFloat(style.columnGap || style.gap || "0") || 0;
+      return first.getBoundingClientRect().width + gap;
+    }
+
+    if (prevBtn) {
+      prevBtn.addEventListener("click", function () {
+        carousel.scrollBy({ left: -slideStep(), behavior: "smooth" });
+      });
+    }
+    if (nextBtn) {
+      nextBtn.addEventListener("click", function () {
+        carousel.scrollBy({ left: slideStep(), behavior: "smooth" });
+      });
+    }
+
+    if (counterEl && slides.length) {
+      var total = slides.length;
+      counterEl.textContent = pad(1) + " / " + pad(total);
+      if ("IntersectionObserver" in window) {
+        var slideIO = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (!entry.isIntersecting) return;
+              var idx = Array.prototype.indexOf.call(slides, entry.target) + 1;
+              counterEl.textContent = pad(idx) + " / " + pad(total);
+            });
+          },
+          { root: carousel, threshold: 0.6 }
+        );
+        slides.forEach(function (s) { slideIO.observe(s); });
+      }
+    }
   }
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape" && lightbox.classList.contains("open")) closeLightbox();
-  });
 })();
